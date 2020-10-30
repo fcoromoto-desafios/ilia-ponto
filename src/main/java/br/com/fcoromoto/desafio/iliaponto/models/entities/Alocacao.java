@@ -1,23 +1,29 @@
 package br.com.fcoromoto.desafio.iliaponto.models.entities;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.Duration;
 import java.time.LocalDate;
 
 import static br.com.fcoromoto.desafio.iliaponto.util.Predication.checkArgument;
 import static java.util.Objects.isNull;
 
+@Entity
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alocacao {
 
+    @Id
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDate data;
     private Duration tempo;
     private String projeto;
