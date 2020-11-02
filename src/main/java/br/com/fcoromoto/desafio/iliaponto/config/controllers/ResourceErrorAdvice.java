@@ -1,6 +1,9 @@
 package br.com.fcoromoto.desafio.iliaponto.config.controllers;
 
+import br.com.fcoromoto.desafio.iliaponto.exceptions.NegocioException;
+import br.com.fcoromoto.desafio.iliaponto.exceptions.RegistroNaoEncontradoException;
 import br.com.fcoromoto.desafio.iliaponto.models.dtos.ErrorDTO;
+import br.com.fcoromoto.desafio.iliaponto.models.dtos.MensagemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -46,5 +49,17 @@ public class ResourceErrorAdvice {
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public String handle(EmptyResultDataAccessException exception) {
         return RESOURCE_NOT_FOUND;
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RegistroNaoEncontradoException.class)
+    public String handle(RegistroNaoEncontradoException exception) {
+        return RESOURCE_NOT_FOUND;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NegocioException.class)
+    public MensagemDTO handle(NegocioException exception) {
+        return MensagemDTO.of(exception.getMessage());
     }
 }

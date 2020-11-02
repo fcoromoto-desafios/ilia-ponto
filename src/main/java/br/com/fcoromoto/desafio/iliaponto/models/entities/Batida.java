@@ -2,17 +2,15 @@ package br.com.fcoromoto.desafio.iliaponto.models.entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static br.com.fcoromoto.desafio.iliaponto.util.Predication.checkArgument;
 import static java.util.Objects.isNull;
 
-@Entity
 @Getter
+@Entity
+@Table(name = "TB_BATIDA")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
