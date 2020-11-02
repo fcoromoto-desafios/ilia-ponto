@@ -10,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.Duration;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+import static org.apache.commons.lang3.StringUtils.upperCase;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AlocacaoRelatorioDto {
@@ -21,7 +24,11 @@ public class AlocacaoRelatorioDto {
     public static AlocacaoRelatorioDto of(String nomeProjeto, Duration tempo) {
         Predication.checkArgument(() -> StringUtils.isEmpty(nomeProjeto), "Nome projeto não pode ser vazio");
         Predication.checkArgument(() -> Objects.isNull(tempo), "Tempo não pode ser nullo");
-        return new AlocacaoRelatorioDto(nomeProjeto, tempo);
+        return new AlocacaoRelatorioDto(normalizarNomeProjeto(nomeProjeto), tempo);
+    }
+
+    private static String normalizarNomeProjeto(String nomeProjeto){
+        return upperCase(trim(nomeProjeto));
     }
 
     public static AlocacaoRelatorioDto of(Alocacao alocacao) {

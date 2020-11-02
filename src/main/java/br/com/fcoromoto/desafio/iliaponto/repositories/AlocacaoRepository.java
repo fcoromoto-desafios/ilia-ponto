@@ -13,6 +13,6 @@ public interface AlocacaoRepository extends JpaRepository<Alocacao, Long> {
     @Query("Select a.tempo from Alocacao a where a.data = :dia ")
     List<Duration> getTempoAlocadoPorDia(LocalDate dia);
 
-    @Query("Select a from Alocacao a where to_char(a.data, 'YYYY-MM') = :data order by a.data")
+    @Query("Select a from Alocacao a where DATE_FORMAT(a.data, '%Y-%m') = :data order by a.data")
     List<Alocacao> getRegistrosPorMes(String data);
 }

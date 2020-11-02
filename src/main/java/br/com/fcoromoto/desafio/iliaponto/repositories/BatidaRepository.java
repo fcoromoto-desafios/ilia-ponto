@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface BatidaRepository extends JpaRepository<Batida, Long> {
 
-    @Query("Select b.dataHora from Batida b where to_char(b.dataHora, 'YYYY-MM-DD') = to_char(:dia, 'YYYY-MM-DD') order by b.dataHora")
+    @Query("Select b.dataHora from Batida b where  date(b.dataHora) = date(:dia) order by b.dataHora")
     List<LocalDateTime> getRegistrosPorDia(LocalDate dia);
 
-    @Query("Select b.dataHora from Batida b where to_char(b.dataHora, 'YYYY-MM') = :dia order by b.dataHora")
+    @Query("Select b.dataHora from Batida b where DATE_FORMAT(b.dataHora, '%Y-%m') = :dia order by b.dataHora")
     List<LocalDateTime> getRegistrosPorMes(String dia);
+
 }
+

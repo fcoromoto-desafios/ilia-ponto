@@ -79,21 +79,6 @@ class BatidaServiceTest {
     }
 
     @Test
-    void deveLancarExceptionQuandoLancarMenosUmaHoraAlmolocoAdicionandoHorarioSemOrdem() {
-        // Cenário
-        LocalDateTime dataHora = LocalDateTime.of(2020, 11, 2, 8, 0); // Segunda
-        List<LocalDateTime> registros = Arrays.asList(dataHora, dataHora.plusHours(4), dataHora.plusHours(9));
-        when(repository.getRegistrosPorDia(dataHora.toLocalDate())).thenReturn(registros);
-
-        // Ação
-        Executable incluir = () -> service.incluir(BatidaDto.of(dataHora.plusHours(4).plusMinutes(30)));
-
-        // Teste
-        verificarException(incluir, "Deve haver no mínimo 1 hora de almoço");
-        verify(repository, times(0)).save(any(Batida.class));
-    }
-
-    @Test
     void naoDeveLancarExceptionQuandoLancarMenosUmaHoraAlmolocoRegistroEntrada() {
         // Cenário
         LocalDateTime dataHora = LocalDateTime.of(2020, 11, 2, 8, 0); // Segunda

@@ -22,10 +22,16 @@ public class Alocacao {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_ALOCACAO")
     private Long id;
 
+    @Column(name = "DT_ALOCACAO")
     private LocalDate data;
+
+    @Column(name = "TEMPO_ALOCACAO")
     private Duration tempo;
+
+    @Column(name = "NOME_PROJETO")
     private String projeto;
 
     public static Alocacao builder(LocalDate data, Duration tempo, String projeto) {

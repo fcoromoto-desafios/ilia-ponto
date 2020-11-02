@@ -20,14 +20,13 @@ public class RelatorioService {
     @Autowired
     private BatidaRepository batidaRepository;
 
-    public RelatorioDto gerarRelatorio(String mes) {
-
-        List<AlocacaoRelatorioDto> alocacoes = alocacaoRepository.getRegistrosPorMes(mes).stream()
+    public RelatorioDto gerarRelatorio(String mesAno) {
+        List<AlocacaoRelatorioDto> alocacoes = alocacaoRepository.getRegistrosPorMes(mesAno).stream()
                 .map(AlocacaoRelatorioDto::of)
                 .collect(Collectors.toList());
 
-        List<RegistroRelatorioDto> registros = RegistroRelatorioDto.of(batidaRepository.getRegistrosPorMes(mes));
+        List<RegistroRelatorioDto> registros = RegistroRelatorioDto.of(batidaRepository.getRegistrosPorMes(mesAno));
 
-        return RelatorioDto.of(mes, alocacoes, registros);
+        return RelatorioDto.of(mesAno, alocacoes, registros);
     }
 }

@@ -8,6 +8,9 @@ import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.*;
 
 @Getter
 public class RelatorioDto {
@@ -31,15 +34,34 @@ public class RelatorioDto {
 
         RelatorioDto relatorioDto = new RelatorioDto();
 
-        relatorioDto.alocacoes = new ArrayList<>(alocacoes);
-        relatorioDto.registros = new ArrayList<>(registros);
         relatorioDto.mes = mes;
+        relatorioDto.registros = new ArrayList<>(registros);
+        relatorioDto.alocacoes = relatorioDto.agruparAlocacoes(alocacoes);
 
         relatorioDto.horasRegistradas = relatorioDto.calcularHorasRegistradas();
         relatorioDto.horasTrabalhadas = relatorioDto.calcularHorasTrabalhadas();
         relatorioDto.calcularHorasDevidasExcedentes();
 
         return relatorioDto;
+    }
+
+    private List<AlocacaoRelatorioDto> agruparAlocacoes(List<AlocacaoRelatorioDto> alocacoes){
+        Map<String, List<Duration>> mapa = criarMapaProjetoTempo(alocacoes);
+
+        List<AlocacaoRelatorioDto> alocacoesProjetosAgrupados = new ArrayList<>();
+
+        for(String projeto : mapa.keySet()){
+            Duration tempo = mapa.get(projeto).stream().reduce(Duration.ZERO, Duration::plus);
+            AlocacaoRelatorioDto dto = AlocacaoRelatorioDto.of(projeto, tempo);
+            alocacoesProjetosAgrupados.add(dto);
+        }
+        return alocacoesProjetosAgrupados;
+    }
+
+    private Map<String, List<Duration>> criarMapaProjetoTempo(List<AlocacaoRelatorioDto> alocacoes){
+        return alocacoes.stream()
+                .collect(groupingBy(AlocacaoRelatorioDto::getNomeProjeto,
+                                    mapping(AlocacaoRelatorioDto::getTempo, toList())));
     }
 
     private Duration calcularHorasRegistradas() {
